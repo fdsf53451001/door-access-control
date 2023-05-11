@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{%block PAGE_NAME%}ChatGPT - API Setting{%endblock%}
+
+{%block PAGEUP_SCRIPT%}
+
+
+{%endblock%}
+
+{%block PAGE%}
+<h1 class="h3 mb-2 text-gray-800">系統API設定</h1>
+<p>請確定設定正確，錯誤的修改會導致系統錯誤！！！ 並且，部分改動需要重啟程式。</p>
+<!-- Default Card Example -->
+<div class="card mb-4">
+    <div class="card-header">
+        <div style="display: flex;">
+            <h6 class="m-0 font-weight-bold text-primary">系統設定</h6>
+            <div style="margin-left:auto;">
+                <button type="button" id="input-send" class="btn btn-primary btn-sm" onclick="save_setting_field()">儲存</button>
+            </div>
+        </div>
+    </div>
+    <div id="all_story_name">
+    </div>
+        <div class="card-body" style="display: flex; justify-content: center;">
+            <div class="input-group" style="height: 55vh;">
+                <span class="input-group-text">Setting</span>
+                <textarea class="form-control" id="setting-field" aria-label="Setting"></textarea>
+            </div>
+        </div>
+</div>
+
+{%endblock%}
+
+{%block PAGEDOWN_SCRIPT%}
+<script>
+function get_setting_field(){
+    $.ajax({
+        url: "/api/system_setting?sid={{PASS_DATA['SID']}}",
+        type: "GET",
+        success: function (data) {
+            $("#setting-field").val(data);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("資料取得失敗");
+        }
+    });
+}
+
+function save_setting_field(){
+    $.ajax({
+        url: "/api/system_setting?sid={{PASS_DATA['SID']}}",
+        type: "POST",
+        data: JSON.stringify({
+            "settings": $("#setting-field").val()
+        }),
+        contentType: "application/json; charset=utf-8",
+            dataType: "json",
+        success: function (data) {
+            location.reload();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("儲存失敗");
+        }
+    });
+}
+
+get_setting_field();
+</script>
+{%endblock%}
