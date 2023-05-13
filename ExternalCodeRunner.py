@@ -10,7 +10,7 @@ class ExternalCodeRunner():
         if not command_content:
             return command
 
-        threading.Thread(target=self.run_command, args=(command[2], platform_name, user_id, send_to_user)).start()
+        threading.Thread(target=self.run_command, args=(command_content[2], platform_name, user_id, send_to_user)).start()
         return 'Code Running...'
 
     def run_command(self, command, platform_name, user_id, send_to_user):
