@@ -18,7 +18,16 @@ class ExternalCodeRunner():
         result = None
         if command=='hello_world':
             result = self.run('python3 custom_code/hello_world.py').decode()
-
+        elif command=='open_door':
+            result = self.run('python3 custom_code/mqtt_open_door.py').decode()
+        elif command=='close_door':
+            result = self.run('python3 custom_code/mqtt_close_door.py').decode()
+        else:
+            result = '程式錯誤！'
+            logging.error('command錯誤！指定程式不存在：'+command)
+        
+        if not result or result=='':
+            result = '程式執行完成！'
         send_to_user(platform_name, user_id, result) 
 
     def run(self, command):
